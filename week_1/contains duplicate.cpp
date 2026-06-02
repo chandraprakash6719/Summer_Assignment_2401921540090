@@ -1,46 +1,28 @@
 #include <iostream>
 #include <vector>
-#include <algorithm>
+#include <unordered_set>
 using namespace std;
 
-int minMeetingRooms(vector<vector<int>>& intervals) {
-    vector<int> start, end;
+bool containsDuplicate(vector<int>& nums) {
+    unordered_set<int> seen;
 
-    for (auto& interval : intervals) {
-        start.push_back(interval[0]);
-        end.push_back(interval[1]);
+    for (int num : nums) {
+        if (seen.count(num))
+            return true;
+
+        seen.insert(num);
     }
 
-    sort(start.begin(), start.end());
-    sort(end.begin(), end.end());
-
-    int rooms = 0, maxRooms = 0;
-    int i = 0, j = 0;
-    int n = intervals.size();
-
-    while (i < n) {
-        if (start[i] < end[j]) {
-            rooms++;
-            maxRooms = max(maxRooms, rooms);
-            i++;
-        } else {
-            rooms--;
-            j++;
-        }
-    }
-
-    return maxRooms;
+    return false;
 }
 
 int main() {
-    vector<vector<int>> intervals = {
-        {0, 30},
-        {5, 10},
-        {15, 20}
-    };
+    vector<int> nums = {1, 2, 3, 1};
 
-    cout << "Minimum Meeting Rooms Required = "
-         << minMeetingRooms(intervals) << endl;
+    if (containsDuplicate(nums))
+        cout << "true";
+    else
+        cout << "false";
 
     return 0;
 }
