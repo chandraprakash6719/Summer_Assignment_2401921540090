@@ -1,20 +1,28 @@
 class Solution {
 public:
-    vector<vector<string>> groupAnagrams(vector<string>& strs) {
-        unordered_map<string, vector<string>> mp;
+    int compress(vector<char>& chars) {
+        int i = 0;
+        int index = 0;
 
-        for (string s : strs) {
-            string key = s;
-            sort(key.begin(), key.end());
-            mp[key].push_back(s);
+        while (i < chars.size()) {
+            char curr = chars[i];
+            int count = 0;
+
+            while (i < chars.size() && chars[i] == curr) {
+                i++;
+                count++;
+            }
+
+            chars[index++] = curr;
+
+            if (count > 1) {
+                string cnt = to_string(count);
+                for (char c : cnt) {
+                    chars[index++] = c;
+                }
+            }
         }
 
-        vector<vector<string>> result;
-
-        for (auto& pair : mp) {
-            result.push_back(pair.second);
-        }
-
-        return result;
+        return index;
     }
 };
