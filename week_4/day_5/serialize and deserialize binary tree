@@ -1,0 +1,56 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+class Codec {
+public:
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        string result;
+        dfsSerialize(root, result);
+        return result;
+    }
+
+    void dfsSerialize(TreeNode* root, string &result) {
+        if (root == nullptr) {
+            result += "N,";
+            return;
+        }
+
+        result += to_string(root->val) + ",";
+        dfsSerialize(root->left, result);
+        dfsSerialize(root->right, result);
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        stringstream ss(data);
+        return dfsDeserialize(ss);
+    }
+
+    TreeNode* dfsDeserialize(stringstream &ss) {
+        string value;
+        getline(ss, value, ',');
+
+        if (value == "N")
+            return nullptr;
+
+        TreeNode* node = new TreeNode(stoi(value));
+        node->left = dfsDeserialize(ss);
+        node->right = dfsDeserialize(ss);
+
+        return node;
+    }
+};
+
+/**
+ * Your Codec object will be instantiated and called as such:
+ * Codec ser, deser;
+ * TreeNode* ans = deser.deserialize(ser.serialize(root));
+ */
